@@ -9,7 +9,7 @@ var dependencyOrderDetector = function(){
     var dependecies = this.packagesToObject(input);
     var packagesWithNoDependencies = findPackagesWithNoDependencies(dependencies);
     this.addPackagesToDepencyOrder(packagesWithNoDependencies);
-    this.removePackagesFromObj(packagesWithNoDependencies);
+    var dependencies = this.removePackages(packagesWithNoDependencies, dependencies);
   }
 
 
@@ -35,14 +35,17 @@ var dependencyOrderDetector = function(){
     return packagesWithNoDependencies;
   }
 
-  this.addPackagesToDependencyOrder(dependencies){
+  this.addPackagesToDependencyOrder = function(dependencies){
     for(var i in dependencies){
       this.dependencyOrder.push(dependencies[i]);
     }
   }
 
-  this.removePackagesFromObj(packagesWithNoDependencies){
-    
+  this.removePackages = function(packagesWithNoDependencies, dependencies){
+    for(var i in packagesWithNoDependencies){
+      delete dependencies[packagesWithNoDependencies[i]];
+    }
+    return dependencies;
   }
 
 }

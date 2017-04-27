@@ -27,6 +27,21 @@ describe("DependencyOrderDetector", function(){
       .toEqual(['KittenService', 'Ice']);
   })
 
+  it("should add dependencies to the dependencyOrder", function(){
+    var dependencies = ['KittenService', 'Ice'];
+    dod.addPackagesToDependencyOrder(dependencies);
+    expect(dod.dependencyOrder).toEqual(dependencies);
+  })
+
+  it("should delete packages from dependencyObj", function(){
+    var dependencies = ['KittenService', 'Ice'];
+    var modifiedDependencyObj = dod.removePackages(dependencies, dependenciesObj);
+    expect(modifiedDependencyObj)
+      .toEqual({ 'Leetmeme': 'Cyberportal',
+                 'Cyberportal': 'Ice', 'CamelCaser': 'KittenService',
+                 'Fraudstream': 'Leetmeme'});
+  })
+
   
 })
 

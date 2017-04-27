@@ -1,3 +1,8 @@
+// To run the program:
+// Instantiate a new DependencyOrderDetector object and
+// run its findDependencyOrder function, 
+// passing the array of string dependencies as a parameter
+
 var DependencyOrderDetector = function(){
   this.dependencyOrder = [];
 
@@ -7,13 +12,13 @@ var DependencyOrderDetector = function(){
     }
     this.dependencyOrder = [];
 
-    var dependencies = this.convertPackagesToObject(dependencies);
+    var dependenciesObj = this.convertPackagesToObject(dependencies);
 
-    var packagesWithNoDependencies = this.findPackagesWithNoDependencies(dependencies);
+    var packagesWithNoDependencies = this.findPackagesWithNoDependencies(dependenciesObj);
     this.addPackagesToDependencyOrder(packagesWithNoDependencies);
-    dependencies = this.removePackagesFromObj(packagesWithNoDependencies, dependencies);
+    dependenciesObj = this.removePackagesFromObj(packagesWithNoDependencies, dependenciesObj);
 
-    this.completeDependencyOrder(dependencies);
+    this.completeDependencyOrder(dependenciesObj);
     return this.dependencyOrder.join(", ");
   }
 

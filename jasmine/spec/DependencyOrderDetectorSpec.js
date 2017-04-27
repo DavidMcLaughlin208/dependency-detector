@@ -94,6 +94,11 @@ describe("DependencyOrderDetector", function(){
       expect(function(){dod.findDependencyOrder(circularDependenciesString)})
         .toThrow(new Error("Dependencies have cycles -- cannot complete"));
     })
+
+    it("should throw an exception if there are no packages with no dependencies", function(){
+      expect(function(){dod.findDependencyOrder([ 'cat: dog', 'dog: cat' ])})
+        .toThrow(new Error("Dependencies have cycles -- cannot complete"));
+    })
   })
 
   

@@ -10,7 +10,7 @@
 
 - Have a check for if we loop through all installed packages and are unable to install any packages. If that is the case we throw an exception since it will be an infinite loop.
 
-- return a string with 
+- return a string with the dependency order
 
 # Pseudocode
 

@@ -1,10 +1,14 @@
 var dependencyOrderDetector = function(){
+  this.dependencyOrder = [];
+
   this.findDependencyOrder = function(dependcies){
     if(typeof dependcies !== Array){
       throw Error("Incorrect data type -- Input must be an array of strings");
     }
 
     var dependecies = this.packagesToObject(input);
+    dependencies = addPackagesWithNoDependencies(dependencies);
+
   }
 
 
@@ -19,4 +23,15 @@ var dependencyOrderDetector = function(){
     }
     return dependencies;
   }
+
+  this.packagesWithNoDependencies = function(dependencies){
+    for(var package in dependencies){
+      if(dependencies[package] === ''){
+        this.dependencyOrder.push(package);
+        delete dependencies[package];
+      }
+    }
+    return dependencies;
+  }
+
 }

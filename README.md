@@ -4,7 +4,7 @@
 
 - There will always be a package that has no dependencies; this is necessary to find a solution. (Throw an exception if there isn't one.)
 
-- Identify packages included in the input that have no dependencies. Also, identify packages that are dependencies but are not included as a key.
+- Identify packages included in the input that have no dependencies.
 
 - Loop through installed packages, finding not yet installed packages that depend on them, and add them to the list. This should continue until all packages are installed.
 
@@ -16,7 +16,6 @@
 
 FUNCTION(input)
   Turn input into an object literal (package: dependencies)
-  FOR VALUES find dependencies not listed as packages, add them as keys with no dependencies
   Remove packages with no dependencies from object and push them to an array storing dependency orders
 
   WHILE object is not empty

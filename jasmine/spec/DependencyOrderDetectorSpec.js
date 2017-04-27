@@ -6,7 +6,7 @@ describe("DependencyOrderDetector", function(){
   var completedDependencyOrder;
 
   beforeEach(function() {
-    dod = new dependencyOrderDetector();
+    dod = new DependencyOrderDetector();
     dependenciesString = ['KittenService: ', 'Leetmeme: Cyberportal',
                           'Cyberportal: Ice', 'CamelCaser: KittenService',
                           'Fraudstream: Leetmeme', 'Ice: '];
@@ -77,9 +77,8 @@ describe("DependencyOrderDetector", function(){
   })
 
   it("should calculate the dependency order from an array of strings", function(){
-    console.log(dependenciesString)
     expect(dod.findDependencyOrder(dependenciesString))
-      .toEqual(completeDependencyOrder.join(", "));
+      .toEqual(completedDependencyOrder.join(", "));
   })
 
   

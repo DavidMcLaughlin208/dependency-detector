@@ -1,17 +1,18 @@
-var dependencyOrderDetector = function(){
+var DependencyOrderDetector = function(){
   this.dependencyOrder = [];
 
   this.findDependencyOrder = function(dependencies){
-    if(typeof dependencies !== Array){
+    console.log(dependencies instanceof Array);
+    if(!(dependencies instanceof Array)){
       throw Error("Incorrect data type -- Input must be an array of strings");
     }
 
-    var dependencies = this.packagesToObject(input);
-    var packagesWithNoDependencies = findPackagesWithNoDependencies(dependencies);
-    this.addPackagesToDepencyOrder(packagesWithNoDependencies);
-    dependencies = this.removePackages(packagesWithNoDependencies, dependencies);
-    this.completeDependencyOrder();
-    return this.dependencyOrder().join(", ");
+    var dependencies = this.convertPackagesToObject(dependencies);
+    var packagesWithNoDependencies = this.findPackagesWithNoDependencies(dependencies);
+    this.addPackagesToDependencyOrder(packagesWithNoDependencies);
+    dependencies = this.removePackagesFromObj(packagesWithNoDependencies, dependencies);
+    this.completeDependencyOrder(dependencies);
+    return this.dependencyOrder.join(", ");
   }
 
 

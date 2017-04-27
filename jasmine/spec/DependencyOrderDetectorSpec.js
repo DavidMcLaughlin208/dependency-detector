@@ -99,6 +99,10 @@ describe("DependencyOrderDetector", function(){
       expect(function(){dod.findDependencyOrder([ 'cat: dog', 'dog: cat' ])})
         .toThrow(new Error("Dependencies have cycles -- cannot complete"));
     })
+
+    it("should return an empty string from an input with no dependencies", function(){
+      expect(dod.findDependencyOrder([])).toEqual("");
+    })
   })
 
   

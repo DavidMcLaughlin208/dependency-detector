@@ -31,18 +31,14 @@ var DependencyOrderDetector = function(){
   }
 
   this.findPackagesWithNoDependencies = function(dependencies){
-    var packagesWithNoDependencies = [];
-    for(var package in dependencies){
-      if(dependencies[package] === ''){
-        packagesWithNoDependencies.push(package);
-      }
-    }
-    return packagesWithNoDependencies;
+    return Object.keys(dependencies).filter(function(package){
+      return dependencies[package] === '';
+    })
   }
 
-  this.addPackagesToDependencyOrder = function(dependencies){
-    for(var i in dependencies){
-      this.dependencyOrder.push(dependencies[i]);
+  this.addPackagesToDependencyOrder = function(dependenciesArr){
+    for(var i in dependenciesArr){
+      this.dependencyOrder.push(dependenciesArr[i]);
     }
   }
 
@@ -53,19 +49,19 @@ var DependencyOrderDetector = function(){
     return dependencies;
   }
 
-  this.completeDependencyOrder = function(dependencies){
-    while(Object.keys(dependencies).length > 0){
+  this.completeDependencyOrder = function(dependenciesObj){
+    while(Object.keys(dependenciesObj).length > 0){
       var packagesToBeAdded = [];
       for(var i in this.dependencyOrder){
         dependency = this.dependencyOrder[i];
-        for(var package in dependencies){
-          if(dependencies[package] === dependency){
+        for(var package in dependenciesObj){
+          if(dependenciesObj[package] === dependency){
             packagesToBeAdded.push(package);
           }
         }
       }
       this.addPackagesToDependencyOrder(packagesToBeAdded);
-      dependencies = this.removePackagesFromObj(packagesToBeAdded, dependencies);
+      dependencies = this.removePackagesFromObj(packagesToBeAdded, dependenciesObj);
 
       if(packagesToBeAdded.length === 0){
         throw Error("Dependencies have cycles -- cannot complete");

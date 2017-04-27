@@ -18,7 +18,7 @@ describe("DependencyOrderDetector", function(){
   })
 
   it("should convert an array of strings to an object", function(){
-    expect(dod.packagesToObject(dependenciesString))
+    expect(dod.convertPackagesToObject(dependenciesString))
       .toEqual(dependenciesObj);
   })
 
@@ -35,7 +35,7 @@ describe("DependencyOrderDetector", function(){
 
   it("should delete packages from dependencyObj", function(){
     var dependencies = ['KittenService', 'Ice'];
-    var modifiedDependencyObj = dod.removePackages(dependencies, dependenciesObj);
+    var modifiedDependencyObj = dod.removePackagesFromObj(dependencies, dependenciesObj);
     expect(modifiedDependencyObj)
       .toEqual({ 'Leetmeme': 'Cyberportal',
                  'Cyberportal': 'Ice', 'CamelCaser': 'KittenService',

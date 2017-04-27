@@ -10,13 +10,15 @@ var dependencyOrderDetector = function(){
     var packagesWithNoDependencies = findPackagesWithNoDependencies(dependencies);
     this.addPackagesToDepencyOrder(packagesWithNoDependencies);
     var dependencies = this.removePackages(packagesWithNoDependencies, dependencies);
+
+
   }
 
 
-  this.packagesToObject = function(input){
+  this.convertPackagesToObject = function(packagesArray){
     var dependencies = {};
-    for(var i in input){
-      var strings = input[i].split(":");
+    for(var i in packagesArray){
+      var strings = packagesArray[i].split(":");
       var package = strings[0].trim();
       var dependency = strings[1] || '';
 
@@ -41,11 +43,30 @@ var dependencyOrderDetector = function(){
     }
   }
 
-  this.removePackages = function(packagesWithNoDependencies, dependencies){
+  this.removePackagesFromObj = function(packagesWithNoDependencies, dependencies){
     for(var i in packagesWithNoDependencies){
       delete dependencies[packagesWithNoDependencies[i]];
     }
     return dependencies;
   }
+
+  this.completeDependencyList = function(dependencies){
+    while(Object.keys(dependencies).length > 0){
+      var packagesToBeAdded = [];
+      for(var i in this.dependencyOrder){
+        dependency = dependencyOrder[i];
+        for(var package in dependencies){
+          if(dependencies[package] === dependency){
+            packagesToBeAdded.push(package);
+          }
+        }
+      }
+      this.addPackagesToDependencyOrder(packagesToBeAdded);
+      dependencies = removePackagesFromObj(packagesToBeAdded);
+      if(packagesToBeAdded.length === 0){break;}
+    }
+  }
+
+
 
 }

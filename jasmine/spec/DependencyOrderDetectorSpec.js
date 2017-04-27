@@ -9,6 +9,12 @@ describe("DependencyOrderDetector", function(){
       .toThrow(new Error("Incorrect data type -- Input must be an array of strings"))
   })
 
+  it("should convert an array of strings to an object", function(){
+    expect(dod.packagesToObject(['Kitten Service: CamelCaser', 'CamelCaser: ']))
+      .toEqual({'Kitten Service': 'CamelCaser',
+                'CamelCaser': ''});
+  })
+
   
 })
 

@@ -11,8 +11,11 @@ var dependencyOrderDetector = function(){
   this.packagesToObject = function(input){
     var dependencies = {};
     for(var i in input){
-      var strings = input[i].split(": ");
-      dependencies.strings[0] = strings[1];
+      var strings = input[i].split(":");
+      var package = strings[0].trim();
+      var dependency = strings[1] || '';
+
+      dependencies[package] = dependency.trim();
     }
     return dependencies;
   }

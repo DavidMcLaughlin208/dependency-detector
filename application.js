@@ -7,8 +7,9 @@ var dependencyOrderDetector = function(){
     }
 
     var dependecies = this.packagesToObject(input);
-    dependencies = addPackagesWithNoDependencies(dependencies);
-
+    var packagesWithNoDependencies = findPackagesWithNoDependencies(dependencies);
+    this.addPackagesToDepencyOrder(packagesWithNoDependencies);
+    this.removePackagesFromObj(packagesWithNoDependencies);
   }
 
 
@@ -24,14 +25,24 @@ var dependencyOrderDetector = function(){
     return dependencies;
   }
 
-  this.packagesWithNoDependencies = function(dependencies){
+  this.findPackagesWithNoDependencies = function(dependencies){
+    var packagesWithNoDependencies = [];
     for(var package in dependencies){
       if(dependencies[package] === ''){
-        this.dependencyOrder.push(package);
-        delete dependencies[package];
+        packagesWithNoDependencies.push(package);
       }
     }
-    return dependencies;
+    return packagesWithNoDependencies;
+  }
+
+  this.addPackagesToDependencyOrder(dependencies){
+    for(var i in dependencies){
+      this.dependencyOrder.push(dependencies[i]);
+    }
+  }
+
+  this.removePackagesFromObj(packagesWithNoDependencies){
+    
   }
 
 }

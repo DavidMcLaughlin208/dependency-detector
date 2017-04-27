@@ -4,6 +4,8 @@ describe("DependencyOrderDetector", function(){
   var dependenciesObj;
   var dependenciesObjNoBasePackages;
   var completedDependencyOrder;
+  var circularDependenciesObj;
+  var circularDependenciesString;
 
   beforeEach(function() {
     dod = new DependencyOrderDetector();
@@ -21,15 +23,16 @@ describe("DependencyOrderDetector", function(){
 
     completedDependencyOrder = [ 'KittenService', 'Ice', 'CamelCaser', 'Cyberportal', 'Leetmeme', 'Fraudstream' ];
 
-    circularDependencies = { 'Leetmeme': 'Cyberportal',
+    circularDependenciesObj = { 'Leetmeme': 'Cyberportal',
                         'Cyberportal': 'Ice', 'CamelCaser': 'KittenService',
                         'Ice': 'Fraudstream' };
+    
+    circularDependenciesString = ['KittenService: ', 'Leetmeme: Cyberportal',
+                                  'Cyberportal: Ice', 'CamelCaser: KittenService',
+                                  'Fraudstream: ', 'Ice: Leetmeme']
   })
 
-  it("should throw an exception if not given an array", function(){
-    expect( function(){dod.findDependencyOrder("Failure")})
-      .toThrow(new Error("Incorrect data type -- Input must be an array of strings"))
-  })
+  
   describe("convertPackagesToObject", function(){
     it("should convert an array of strings to an object", function(){
       expect(dod.convertPackagesToObject(dependenciesString))
@@ -71,14 +74,26 @@ describe("DependencyOrderDetector", function(){
 
     it("should throw an error when the dependencies are circular", function(){
       dod.dependencyOrder = [ 'KittenService', 'Leetmeme' ];
-      expect(function(){dod.completeDependencyOrder(circularDependencies)})
+      expect(function(){dod.completeDependencyOrder(circularDependenciesObj)})
         .toThrow(new Error("Dependencies have cycles -- cannot complete"));
     })
   })
 
-  it("should calculate the dependency order from an array of strings", function(){
-    expect(dod.findDependencyOrder(dependenciesString))
-      .toEqual(completedDependencyOrder.join(", "));
+  describe("findDependencyOrder", function(){
+    it("should throw an exception if not given an array", function(){
+      expect( function(){dod.findDependencyOrder("Failure")})
+        .toThrow(new Error("Incorrect data type -- Input must be an array of strings"))
+    })
+
+    it("should calculate the dependency order from an array of strings", function(){
+      expect(dod.findDependencyOrder(dependenciesString))
+        .toEqual(completedDependencyOrder.join(", "));
+    })
+
+    it("should throw an error when the dependencies are circular", function(){
+      expect(function(){dod.findDependencyOrder(circularDependenciesString)})
+        .toThrow(new Error("Dependencies have cycles -- cannot complete"));
+    })
   })
 
   

@@ -8,9 +8,11 @@ var DependencyOrderDetector = function(){
     }
 
     var dependencies = this.convertPackagesToObject(dependencies);
+
     var packagesWithNoDependencies = this.findPackagesWithNoDependencies(dependencies);
     this.addPackagesToDependencyOrder(packagesWithNoDependencies);
     dependencies = this.removePackagesFromObj(packagesWithNoDependencies, dependencies);
+    
     this.completeDependencyOrder(dependencies);
     return this.dependencyOrder.join(", ");
   }

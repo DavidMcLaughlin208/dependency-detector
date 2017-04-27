@@ -1,15 +1,25 @@
 describe("DependencyOrderDetector", function(){
   var dod;
   var dependenciesString;
-  var dependenciesObj
+  var dependenciesObj;
+  var dependenciesObjNoBasePackages;
+  var completedDependencyOrder;
+
   beforeEach(function() {
     dod = new dependencyOrderDetector();
     dependenciesString = ['KittenService: ', 'Leetmeme: Cyberportal',
                           'Cyberportal: Ice', 'CamelCaser: KittenService',
                           'Fraudstream: Leetmeme', 'Ice: '];
+
     dependenciesObj = { 'KittenService': '', 'Leetmeme': 'Cyberportal',
                         'Cyberportal': 'Ice', 'CamelCaser': 'KittenService',
-                        'Fraudstream': 'Leetmeme', 'Ice': '' }
+                        'Fraudstream': 'Leetmeme', 'Ice': '' };
+
+    dependenciesObjNoBasePackages = { 'Leetmeme': 'Cyberportal',
+                                      'Cyberportal': 'Ice', 'CamelCaser': 'KittenService',
+                                      'Fraudstream': 'Leetmeme'}
+
+    completedDependencyOrder = [ 'KittenService', 'Ice', 'CamelCaser', 'Cyberportal', 'Leetmeme', 'Fraudstream' ];
   })
 
   it("should throw an exception if not given an array", function(){
@@ -37,9 +47,13 @@ describe("DependencyOrderDetector", function(){
     var dependencies = ['KittenService', 'Ice'];
     var modifiedDependencyObj = dod.removePackagesFromObj(dependencies, dependenciesObj);
     expect(modifiedDependencyObj)
-      .toEqual({ 'Leetmeme': 'Cyberportal',
-                 'Cyberportal': 'Ice', 'CamelCaser': 'KittenService',
-                 'Fraudstream': 'Leetmeme'});
+      .toEqual(dependenciesObjNoBasePackages);
+  })
+
+  it("should finish the dependency order", function(){
+    dod.dependencyOrder = ['KittenService', 'Ice'];
+    dod.completeDependencyOrder(dependenciesObjNoBasePackages);
+    expect(dod.dependencyOrder).toEqual(completedDependencyOrder)
   })
 
   

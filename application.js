@@ -10,8 +10,8 @@ var dependencyOrderDetector = function(){
     var packagesWithNoDependencies = findPackagesWithNoDependencies(dependencies);
     this.addPackagesToDepencyOrder(packagesWithNoDependencies);
     var dependencies = this.removePackages(packagesWithNoDependencies, dependencies);
-
-
+    this.completeDependencyOrder();
+    return this.dependencyOrder()
   }
 
 
@@ -50,11 +50,11 @@ var dependencyOrderDetector = function(){
     return dependencies;
   }
 
-  this.completeDependencyList = function(dependencies){
+  this.completeDependencyOrder = function(dependencies){
     while(Object.keys(dependencies).length > 0){
       var packagesToBeAdded = [];
       for(var i in this.dependencyOrder){
-        dependency = dependencyOrder[i];
+        dependency = this.dependencyOrder[i];
         for(var package in dependencies){
           if(dependencies[package] === dependency){
             packagesToBeAdded.push(package);
@@ -62,8 +62,11 @@ var dependencyOrderDetector = function(){
         }
       }
       this.addPackagesToDependencyOrder(packagesToBeAdded);
-      dependencies = removePackagesFromObj(packagesToBeAdded);
-      if(packagesToBeAdded.length === 0){break;}
+      dependencies = this.removePackagesFromObj(packagesToBeAdded, dependencies);
+
+      if(packagesToBeAdded.length === 0){
+        throw Error("Dependencies have cycles -- cannot complete");
+      }
     }
   }
 
